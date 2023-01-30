@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="310dp"
+    android:layout_height="match_parent"
+    android:gravity="center_horizontal"
+    android:layout_gravity="center_horizontal"
+    android:layout_marginEnd="32dp"
+    android:layout_marginTop="30dp">
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/movie_image"
+        android:layout_width="310dp"
+        android:layout_height="448dp"
+        app:shapeAppearanceOverlay="@style/roundedCorners"
+        />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="18dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/movie_name_details"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="17dp"
+            android:fontFamily="@font/montserrat_semibold"
+            android:textColor="@color/light"
+            android:textSize="18sp"
+            app:autoSizeMaxTextSize="18sp"
+            app:autoSizeMinTextSize="12sp"
+            app:autoSizeTextType="uniform"
+            app:layout_constraintStart_toStartOf="@+id/guideline3"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="O Gato de Botas 2" />
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="11dp"
+            android:layout_height="11dp"
+            android:layout_marginEnd="8dp"
+            android:src="@drawable/star"
+            app:layout_constraintBottom_toBottomOf="@+id/movie_genres"
+            app:layout_constraintEnd_toStartOf="@+id/movie_rating_details"
+            app:layout_constraintTop_toTopOf="@+id/movie_genres" />
+
+        <TextView
+            android:id="@+id/movie_rating_details"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="17dp"
+            android:fontFamily="@font/montserrat_semibold"
+            android:textColor="@color/light"
+            android:textSize="11sp"
+            app:layout_constraintBottom_toBottomOf="@+id/imageView"
+            app:layout_constraintEnd_toStartOf="@+id/guideline2"
+            app:layout_constraintTop_toTopOf="@+id/imageView" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintGuide_begin="310dp" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_begin="0dp"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <ImageView
+            android:id="@+id/imageView2"
+            android:layout_width="8dp"
+            android:layout_height="8dp"
+            android:layout_marginStart="17dp"
+            android:layout_marginTop="7dp"
+            android:src="@drawable/ellipse"
+            app:layout_constraintStart_toStartOf="@+id/guideline3"
+            app:layout_constraintTop_toBottomOf="@+id/movie_name_details" />
+
+        <TextView
+            android:id="@+id/movie_genres"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:layout_marginTop="3dp"
+            android:fontFamily="@font/montserrat_semibold"
+            android:textColor="@color/light"
+            android:textSize="11sp"
+            app:layout_constraintStart_toEndOf="@+id/imageView2"
+            app:layout_constraintTop_toBottomOf="@+id/movie_name_details"
+            tools:text="Animação" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>
