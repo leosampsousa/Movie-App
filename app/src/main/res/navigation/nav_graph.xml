@@ -3,11 +3,24 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/MovieScreenFragment">
+    app:startDestination="@id/HomeFragment">
+    <fragment
+        android:id="@+id/HomeFragment"
+        android:name="com.hfad.movieapp.fragments.HomeFragment"
+        android:label="Home"
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_HomeFragment_to_movieScreenFragment"
+            app:destination="@id/MovieScreenFragment" />
+    </fragment>
     <fragment
         android:id="@+id/MovieScreenFragment"
         android:name="com.hfad.movieapp.fragments.MovieScreenFragment"
-        android:label="Inbox"
-        tools:layout="@layout/fragment_movie_screen" />
+        android:label="fragment_movie_screen"
+        tools:layout="@layout/fragment_movie_screen" >
+        <argument
+            android:name="movieId"
+            app:argType="long" />
+    </fragment>
 
 </navigation>

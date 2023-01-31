@@ -2,20 +2,24 @@ package com.hfad.movieapp.fragments
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.os.Parcelable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
+import com.google.gson.Gson
 import com.hfad.movieapp.BuildConfig
+import com.hfad.movieapp.MovieEndpoint
 import com.hfad.movieapp.R
 import com.hfad.movieapp.adapters.MoviePreviewAdapter
 import com.hfad.movieapp.adapters.TopicAdapter
 import com.hfad.movieapp.models.Movie
-import com.hfad.movieapp.tmdb.models.MovieEndpoint
+import com.hfad.movieapp.models.Topic
 import com.hfad.movieapp.tmdb.models.MovieListResponse
 import com.hfad.movieapp.util.NetworkUtils
 import com.hfad.movieapp.util.RandomUtil
@@ -31,6 +35,7 @@ class HomeFragment : Fragment() {
     private lateinit var topicListView: RecyclerView
     private lateinit var movieListView: RecyclerView
     private lateinit var chipGroupView: ChipGroup
+    var currentTopic: Topic? = null
     private var popularMovies = listOf<Movie>()
     private var nowPlayingMovies = listOf<Movie>()
     private var allTimeBestMovies = listOf<Movie>()
@@ -54,6 +59,11 @@ class HomeFragment : Fragment() {
 
         val adapter = TopicAdapter()
         topicListView.adapter = adapter
+        if(currentTopic != null) {
+            adapter.cleanNavGuide()
+            adapter.updateNavGuideSelectedItem(currentTopic!!)
+        }
+
         addMovieGenres(view)
 
         val movieListLayoutManager =
@@ -82,6 +92,7 @@ class HomeFragment : Fragment() {
         adapter.onItemClick = {
             adapter.cleanNavGuide()
             adapter.updateNavGuideSelectedItem(it)
+            currentTopic = it
             currentMovieList = when (it.name) {
                 "Populares" -> popularMovies
                 "Em cartaz" -> nowPlayingMovies
@@ -92,13 +103,26 @@ class HomeFragment : Fragment() {
             movieListAdapter.notifyDataSetChanged()
         }
 
-        getPopularMovies(movieListAdapter)
-        getNowPlayingMovies()
-        getAllTimeBestMovies()
+        if(popularMovies.isEmpty()) {
+            getPopularMovies(movieListAdapter)
+        }
+
+        if(nowPlayingMovies.isEmpty()) {
+            getNowPlayingMovies()
+        }
+
+        if(allTimeBestMovies.isEmpty()) {
+            getAllTimeBestMovies()
+        }
+
+        movieListAdapter.onItemClick = {
+            val action = HomeFragmentDirections.actionHomeFragmentToMovieScreenFragment(it.id)
+            view.findNavController().navigate(action)
+        }
     }
 
     private fun addMovieGenres(view: View) {
-        val chipGroup = view.findViewById<ChipGroup>(R.id.chip_group_details);
+        val chipGroup = view.findViewById<ChipGroup>(R.id.chip_group);
         val genreList =
             listOf(
                 "Ação",
@@ -158,7 +182,7 @@ class HomeFragment : Fragment() {
     private fun getNowPlayingMovies() {
         val httpClient = NetworkUtils.getRetrofitInstance("movie/")
         val endpoint = httpClient.create(MovieEndpoint::class.java)
-        val callback = endpoint.getNowPlaying(API_KEY, LANGUAGE, RandomUtil.rand(1,3))
+        val callback = endpoint.getNowPlaying(API_KEY, LANGUAGE, RandomUtil.rand(1, 3))
         val movieList = mutableListOf<Movie>()
         var movieListResponse: MovieListResponse
 
@@ -189,7 +213,7 @@ class HomeFragment : Fragment() {
     private fun getAllTimeBestMovies() {
         val httpClient = NetworkUtils.getRetrofitInstance("movie/")
         val endpoint = httpClient.create(MovieEndpoint::class.java)
-        val callback = endpoint.getTopRated(API_KEY, LANGUAGE, RandomUtil.rand(1,3))
+        val callback = endpoint.getTopRated(API_KEY, LANGUAGE, RandomUtil.rand(1, 3))
         val movieList = mutableListOf<Movie>()
         var movieListResponse: MovieListResponse
 

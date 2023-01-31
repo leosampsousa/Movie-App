@@ -13,7 +13,7 @@ import com.squareup.picasso.Picasso
 
 class MoviePreviewAdapter(var movies: List<Movie>) : RecyclerView.Adapter<MoviePreviewAdapter.MoviePreviewViewHolder>(){
 
-    var onItemClick: ((Topic) -> Unit)? = null
+    var onItemClick: ((Movie) -> Unit)? = null
 
     inner class MoviePreviewViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val movieImageView: ImageView = itemView.findViewById(R.id.movie_image)
@@ -39,6 +39,10 @@ class MoviePreviewAdapter(var movies: List<Movie>) : RecyclerView.Adapter<MovieP
         movieNameView.text = currentMovie.title
         movieRatingView.text = currentMovie.rating.toString()
         movieGenresView.text = currentMovie.getFirstNGenres(3)
+
+        holder.itemView.setOnClickListener {
+            onItemClick?.invoke(currentMovie)
+        }
     }
 
     override fun getItemCount(): Int {

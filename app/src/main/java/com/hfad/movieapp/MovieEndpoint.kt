@@ -1,7 +1,10 @@
-package com.hfad.movieapp.tmdb.models
+package com.hfad.movieapp
 
+import com.hfad.movieapp.tmdb.models.MovieDetailed
+import com.hfad.movieapp.tmdb.models.MovieListResponse
 import retrofit2.Call
 import retrofit2.http.GET
+import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface MovieEndpoint {
@@ -25,4 +28,11 @@ interface MovieEndpoint {
         @Query("language") language: String,
         @Query("page") page: Int
     ): Call<MovieListResponse>
+
+    @GET("{movieId}")
+    fun getMovieDetail(
+        @Path("movieId") movieId: Long,
+        @Query("api_key") apiKey: String,
+        @Query("language") language: String,
+    ): Call<MovieDetailed>
 }

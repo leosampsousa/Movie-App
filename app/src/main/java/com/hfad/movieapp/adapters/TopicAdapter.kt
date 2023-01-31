@@ -61,6 +61,13 @@ class TopicAdapter :
         this.notifyDataSetChanged()
     }
 
+    fun getSelectedTopic(): Topic? {
+        for (topic in topics) {
+            if (topic.navGuideVisible) return topic
+        }
+        return null
+    }
+
     private fun initializeNavBar(): MutableList<Topic> {
         return mutableListOf(
             Topic("Populares", true, 0),

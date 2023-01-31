@@ -5,17 +5,10 @@ import com.hfad.movieapp.tmdb.models.MovieUndetailed
 data class Movie(
     val id: Long,
     val title: String,
-    val posterUrl: String,
+    val posterUrl: String?,
     val genres: List<Genre>,
-    val rating: Double) {
-
-    constructor(
-        id: Long,
-        title: String,
-        posterUrl: String,
-        backdropUrl:String,
-        genres: List<Genre>,
-        rating: Double) : this(id, title, posterUrl, genres, rating)
+    val rating: Double
+) {
 
     fun getFirstNGenres(n: Int): String {
         val sb = java.lang.StringBuilder()
@@ -30,7 +23,7 @@ data class Movie(
         }
 
         val response = sb.toString()
-        if(response.length < 3) {
+        if (response.length < 3) {
             return ""
         }
         return response.subSequence(0, response.length - 3).toString()
@@ -38,10 +31,10 @@ data class Movie(
 
     companion object {
         fun fromMovieUndetailed(movieUndetailed: MovieUndetailed, baseUrl: String): Movie {
-            val genres : List<Genre?> =
-                movieUndetailed.genre_ids.map { genreId -> Genre.fromGenreId(genreId)}
+            val genres: List<Genre?> =
+                movieUndetailed.genre_ids.map { genreId -> Genre.fromGenreId(genreId) }
 
-            val nonNullGenres : MutableList<Genre> = mutableListOf()
+            val nonNullGenres: MutableList<Genre> = mutableListOf()
             for (genre in genres) {
                 if (genre != null) {
                     nonNullGenres.add(genre)
