@@ -19,7 +19,7 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginBottom="32dp"
+        android:layout_marginBottom="15dp"
         android:scrollbars="none"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -60,7 +60,8 @@
                     android:textSize="22sp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="O Gato de Botas 2" />
 
                 <TextView
                     android:id="@+id/movie_year_details"
@@ -70,7 +71,8 @@
                     android:fontFamily="@font/montserrat_semibold"
                     android:textSize="14sp"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/movie_name_details" />
+                    app:layout_constraintTop_toBottomOf="@+id/movie_name_details"
+                    tools:text="2022" />
 
                 <TextView
                     android:id="@+id/movie_runtime"
@@ -81,7 +83,8 @@
                     android:fontFamily="@font/montserrat_semibold"
                     android:textSize="14sp"
                     app:layout_constraintStart_toEndOf="@+id/movie_year_details"
-                    app:layout_constraintTop_toBottomOf="@+id/movie_name_details" />
+                    app:layout_constraintTop_toBottomOf="@+id/movie_name_details"
+                    tools:text="1h54m" />
 
                 <ImageView
                     android:id="@+id/star_details"
@@ -101,7 +104,8 @@
                     android:layout_marginTop="17dp"
                     android:fontFamily="@font/montserrat_semibold"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/movie_name_details" />
+                    app:layout_constraintTop_toBottomOf="@+id/movie_name_details"
+                    tools:text="8.5" />
 
 
             </androidx.constraintlayout.widget.ConstraintLayout>
@@ -127,6 +131,7 @@
             </HorizontalScrollView>
 
             <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/constraintLayout3"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="32dp"
@@ -155,8 +160,36 @@
                     android:fontFamily="@font/montserrat"
                     android:textSize="16sp"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/movie_description_title_details" />
+                    app:layout_constraintTop_toBottomOf="@+id/movie_description_title_details"
+                    tools:text="O Gato de Botas descobre que sua paixão pela aventura cobrou seu preço: ele queimou oito de suas nove vidas, deixando-o com apenas uma vida restante. Gato parte em uma jornada épica para encontrar o mítico Último Desejo e restaurar suas nove vidas." />
+
+                <TextView
+                    android:id="@+id/movie_cast_details"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:fontFamily="@font/montserrat_semibold"
+                    android:text="Elenco"
+                    android:textSize="20sp"
+                    android:visibility="invisible"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/movie_description_details" />
+
             </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/cast_list"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                android:clipToPadding="false"
+                android:focusable="true"
+                android:paddingLeft="32dp"
+                android:layout_marginTop="15dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/constraintLayout3"
+                tools:ignore="RtlSymmetry" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>

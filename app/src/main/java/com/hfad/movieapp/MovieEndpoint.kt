@@ -1,5 +1,6 @@
 package com.hfad.movieapp
 
+import com.hfad.movieapp.tmdb.models.MovieCast
 import com.hfad.movieapp.tmdb.models.MovieDetailed
 import com.hfad.movieapp.tmdb.models.MovieListResponse
 import retrofit2.Call
@@ -35,4 +36,11 @@ interface MovieEndpoint {
         @Query("api_key") apiKey: String,
         @Query("language") language: String,
     ): Call<MovieDetailed>
+
+    @GET("{movieId}/credits")
+    fun getMovieCast(
+        @Path("movieId") movieId: Long,
+        @Query("api_key") apiKey: String,
+        @Query("language") language: String,
+    ): Call<MovieCast>
 }

@@ -28,6 +28,7 @@ android {
         buildConfigField 'String', 'TMDB_BASE_URI',  apikeyProperties['TMDB_BASE_URI']
         buildConfigField 'String', 'TMDB_IMAGE_BASE_URI',  apikeyProperties['TMDB_IMAGE_BASE_URI']
         buildConfigField 'String', 'TMDB_LANGUAGE',  apikeyProperties['TMDB_LANGUAGE']
+        buildConfigField 'String', 'TMDB_PROFILE_BASE_URI',  apikeyProperties['TMDB_PROFILE_BASE_URI']
     }
 
     buildTypes {

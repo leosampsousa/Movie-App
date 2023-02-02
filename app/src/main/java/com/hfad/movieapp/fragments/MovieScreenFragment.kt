@@ -8,14 +8,19 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
-import androidx.core.app.Person.fromBundle
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
 import com.google.android.material.imageview.ShapeableImageView
 import com.hfad.movieapp.BuildConfig
 import com.hfad.movieapp.MovieEndpoint
 import com.hfad.movieapp.R
+import com.hfad.movieapp.adapters.CastAdapter
+import com.hfad.movieapp.models.CastModel
 import com.hfad.movieapp.models.Genre
+import com.hfad.movieapp.tmdb.models.Cast
+import com.hfad.movieapp.tmdb.models.MovieCast
 import com.hfad.movieapp.tmdb.models.MovieDetailed
 import com.hfad.movieapp.util.NetworkUtils
 import com.squareup.picasso.Picasso
@@ -29,6 +34,7 @@ class MovieScreenFragment : Fragment() {
     private val API_KEY = BuildConfig.TMDB_KEY
     private val LANGUAGE = BuildConfig.TMDB_LANGUAGE
     private val IMAGE_BASE_URI = BuildConfig.TMDB_IMAGE_BASE_URI
+    private val PROFILE_BASE_URI = BuildConfig.TMDB_PROFILE_BASE_URI
     private lateinit var movieImage: ShapeableImageView
     private lateinit var movieName: TextView
     private lateinit var movieYear: TextView
@@ -36,6 +42,7 @@ class MovieScreenFragment : Fragment() {
     private lateinit var movieRating: TextView
     private lateinit var chipGroup: ChipGroup
     private lateinit var movieOverview: TextView
+    private lateinit var castView: RecyclerView
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -49,7 +56,15 @@ class MovieScreenFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val movieId = MovieScreenFragmentArgs.fromBundle(requireArguments()).movieId
+        castView = view.findViewById(R.id.cast_list)
+
+        val castLayoutManager =
+            LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+        castView.layoutManager = castLayoutManager
+
+
         getMovieDetailed(view, movieId)
+        getMovieCast(view, movieId)
     }
 
     private fun getMovieDetailed(view: View, movieId: Long) {
@@ -76,6 +91,34 @@ class MovieScreenFragment : Fragment() {
             }
 
             override fun onFailure(call: Call<MovieDetailed>, t: Throwable) {
+            }
+        })
+    }
+
+    private fun getMovieCast(view: View, movieId: Long) {
+        val httpClient = NetworkUtils.getRetrofitInstance("movie/")
+        val endpoint = httpClient.create(MovieEndpoint::class.java)
+        val callback = endpoint.getMovieCast(movieId, API_KEY, LANGUAGE)
+        var movieCast: MovieCast
+        var castList: List<CastModel> = listOf()
+        castView = view.findViewById(R.id.cast_list)
+
+        callback.enqueue(object : Callback<MovieCast> {
+            override fun onResponse(
+                call: Call<MovieCast>,
+                response: Response<MovieCast>
+            ) {
+
+                movieCast = response.body()!!
+
+                castList = movieCast.cast.filter { it.profile_path != null }.map { CastModel.fromApiCast(it, PROFILE_BASE_URI) }.take(10)
+                val castAdapter = CastAdapter(castList)
+                castView.adapter = castAdapter
+
+            }
+            override fun onFailure(call: Call<MovieCast>, t: Throwable) {
+                val castAdapter = CastAdapter(castList)
+                castView.adapter = castAdapter
             }
         })
     }
@@ -136,10 +179,12 @@ class MovieScreenFragment : Fragment() {
     private fun removeProgressBar(view: View) {
         val descriptionTitle = view.findViewById<TextView>(R.id.movie_description_title_details)
         val star = view.findViewById<ImageView>(R.id.star_details)
+        val movieCastLabel = view.findViewById<TextView>(R.id.movie_cast_details)
         val progressBar = view.findViewById<ProgressBar>(R.id.progressBar_details)
 
         descriptionTitle.visibility = View.VISIBLE
         star.visibility = View.VISIBLE
+        movieCastLabel.visibility = View.VISIBLE
         progressBar.visibility = View.INVISIBLE
 
     }
